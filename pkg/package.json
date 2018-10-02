@@ -1,16 +1,15 @@
 {
-  "name": "wasm-tutorial",
+  "name": "wasm-ws-demo",
   "collaborators": [
     "Yue Wang <wangyue2002@gmail.com>"
   ],
-  "description": null,
   "version": "0.1.0",
-  "license": null,
-  "repository": null,
   "files": [
-    "wasm_tutorial_bg.wasm",
-    "wasm_tutorial.d.ts"
+    "wasm_ws_demo_bg.wasm",
+    "wasm_ws_demo.js",
+    "wasm_ws_demo.d.ts"
   ],
-  "main": "wasm_tutorial.js",
-  "types": "wasm_tutorial.d.ts"
+  "module": "wasm_ws_demo.js",
+  "types": "wasm_ws_demo.d.ts",
+  "sideEffects": "false"
 }
