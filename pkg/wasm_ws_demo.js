@@ -1,6 +1,8 @@
 /* tslint:disable */
 import * as wasm from './wasm_ws_demo_bg';
 
+const __wbg_log_f57c568ecd16a171_target = console.log;
+
 let cachedDecoder = new TextDecoder('utf-8');
 
 let cachegetUint8Memory = null;
@@ -14,90 +16,6 @@ function getUint8Memory() {
 function getStringFromWasm(ptr, len) {
     return cachedDecoder.decode(getUint8Memory().subarray(ptr, ptr + len));
 }
-
-const slab = [{ obj: undefined }, { obj: null }, { obj: true }, { obj: false }];
-
-let slab_next = slab.length;
-
-function addHeapObject(obj) {
-    if (slab_next === slab.length) slab.push(slab.length + 1);
-    const idx = slab_next;
-    const next = slab[idx];
-
-    slab_next = next;
-
-    slab[idx] = { obj, cnt: 1 };
-    return idx << 1;
-}
-
-export function __wbg_new_27723c26a045dd2c(arg0, arg1) {
-    let varg0 = getStringFromWasm(arg0, arg1);
-    return addHeapObject(new WebSocket(varg0));
-}
-
-function GetOwnOrInheritedPropertyDescriptor(obj, id) {
-    while (obj) {
-        let desc = Object.getOwnPropertyDescriptor(obj, id);
-        if (desc) return desc;
-        obj = Object.getPrototypeOf(obj);
-    }
-    throw new Error(`descriptor for id='${id}' not found`);
-}
-
-const __wbg_setonopen_050a501582e11d3f_target = GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onopen').set || function() {
-    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onopen').set does not exist`);
-};
-
-const stack = [];
-
-function getObject(idx) {
-    if ((idx & 1) === 1) {
-        return stack[idx >> 1];
-    } else {
-        const val = slab[idx >> 1];
-
-        return val.obj;
-
-    }
-}
-
-export function __wbg_setonopen_050a501582e11d3f(arg0, arg1) {
-    __wbg_setonopen_050a501582e11d3f_target.call(getObject(arg0), getObject(arg1));
-}
-
-const __wbg_setonclose_66c81fce49a0f252_target = GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onclose').set || function() {
-    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onclose').set does not exist`);
-};
-
-export function __wbg_setonclose_66c81fce49a0f252(arg0, arg1) {
-    __wbg_setonclose_66c81fce49a0f252_target.call(getObject(arg0), getObject(arg1));
-}
-
-const __wbg_setonmessage_d96a30134b3d9611_target = GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onmessage').set || function() {
-    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onmessage').set does not exist`);
-};
-
-export function __wbg_setonmessage_d96a30134b3d9611(arg0, arg1) {
-    __wbg_setonmessage_d96a30134b3d9611_target.call(getObject(arg0), getObject(arg1));
-}
-
-const __wbg_setonerror_feed480a1aa8481f_target = GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onerror').set || function() {
-    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onerror').set does not exist`);
-};
-
-export function __wbg_setonerror_feed480a1aa8481f(arg0, arg1) {
-    __wbg_setonerror_feed480a1aa8481f_target.call(getObject(arg0), getObject(arg1));
-}
-
-const __wbg_close_7d848fc3e18292f7_target = WebSocket.prototype.close || function() {
-    throw new Error(`wasm-bindgen: WebSocket.prototype.close does not exist`);
-};
-
-export function __wbg_close_7d848fc3e18292f7(arg0) {
-    __wbg_close_7d848fc3e18292f7_target.call(getObject(arg0));
-}
-
-const __wbg_log_f57c568ecd16a171_target = console.log;
 
 export function __wbg_log_f57c568ecd16a171(arg0, arg1) {
     let varg0 = getStringFromWasm(arg0, arg1);
@@ -127,6 +45,95 @@ export function startRtm(arg0) {
 
     }
 
+}
+
+let cachegetUint32Memory = null;
+function getUint32Memory() {
+    if (cachegetUint32Memory === null || cachegetUint32Memory.buffer !== wasm.memory.buffer) {
+        cachegetUint32Memory = new Uint32Array(wasm.memory.buffer);
+    }
+    return cachegetUint32Memory;
+}
+
+const slab = [{ obj: undefined }, { obj: null }, { obj: true }, { obj: false }];
+
+let slab_next = slab.length;
+
+function addHeapObject(obj) {
+    if (slab_next === slab.length) slab.push(slab.length + 1);
+    const idx = slab_next;
+    const next = slab[idx];
+
+    slab_next = next;
+
+    slab[idx] = { obj, cnt: 1 };
+    return idx << 1;
+}
+
+export function __widl_f_new_WebSocket(arg0, arg1, exnptr) {
+    let varg0 = getStringFromWasm(arg0, arg1);
+    try {
+        return addHeapObject(new WebSocket(varg0));
+    } catch (e) {
+        const view = getUint32Memory();
+        view[exnptr / 4] = 1;
+        view[exnptr / 4 + 1] = addHeapObject(e);
+
+    }
+}
+
+function GetOwnOrInheritedPropertyDescriptor(obj, id) {
+    while (obj) {
+        let desc = Object.getOwnPropertyDescriptor(obj, id);
+        if (desc) return desc;
+        obj = Object.getPrototypeOf(obj);
+    }
+    throw new Error(`descriptor for id='${id}' not found`);
+}
+
+const __widl_f_set_onopen_WebSocket_target = GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onopen').set || function() {
+    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onopen').set does not exist`);
+};
+
+const stack = [];
+
+function getObject(idx) {
+    if ((idx & 1) === 1) {
+        return stack[idx >> 1];
+    } else {
+        const val = slab[idx >> 1];
+
+        return val.obj;
+
+    }
+}
+
+export function __widl_f_set_onopen_WebSocket(arg0, arg1) {
+    __widl_f_set_onopen_WebSocket_target.call(getObject(arg0), getObject(arg1));
+}
+
+const __widl_f_set_onerror_WebSocket_target = GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onerror').set || function() {
+    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onerror').set does not exist`);
+};
+
+export function __widl_f_set_onerror_WebSocket(arg0, arg1) {
+    __widl_f_set_onerror_WebSocket_target.call(getObject(arg0), getObject(arg1));
+}
+
+const __widl_f_set_onclose_WebSocket_target = GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onclose').set || function() {
+    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onclose').set does not exist`);
+};
+
+export function __widl_f_set_onclose_WebSocket(arg0, arg1) {
+    __widl_f_set_onclose_WebSocket_target.call(getObject(arg0), getObject(arg1));
+}
+
+const __widl_f_set_onmessage_WebSocket_target = GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onmessage').set || function() {
+    throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onmessage').set does not exist`);
+};
+
+export function __widl_f_set_onmessage_WebSocket(arg0, arg1) {
+    __widl_f_set_onmessage_WebSocket_target.call(getObject(arg0), getObject(arg1));
 }
 
 function freeWS(ptr) {
@@ -169,6 +176,42 @@ export function __wbindgen_object_drop_ref(i) {
     dropRef(i);
 }
 
+export function __wbindgen_number_get(n, invalid) {
+    let obj = getObject(n);
+    if (typeof(obj) === 'number') return obj;
+    getUint8Memory()[invalid] = 1;
+    return 0;
+}
+
+export function __wbindgen_is_null(idx) {
+    return getObject(idx) === null ? 1 : 0;
+}
+
+export function __wbindgen_is_undefined(idx) {
+    return getObject(idx) === undefined ? 1 : 0;
+}
+
+export function __wbindgen_boolean_get(i) {
+    let v = getObject(i);
+    if (typeof(v) === 'boolean') {
+        return v ? 1 : 0;
+    } else {
+        return 2;
+    }
+}
+
+export function __wbindgen_is_symbol(i) {
+    return typeof(getObject(i)) === 'symbol' ? 1 : 0;
+}
+
+export function __wbindgen_string_get(i, len_ptr) {
+    let obj = getObject(i);
+    if (typeof(obj) !== 'string') return 0;
+    const [ptr, len] = passStringToWasm(obj);
+    getUint32Memory()[len_ptr / 4] = len;
+    return ptr;
+}
+
 export function __wbindgen_cb_drop(i) {
     let obj = getObject(i).original;
     obj.a = obj.b = 0;
@@ -176,8 +219,17 @@ export function __wbindgen_cb_drop(i) {
 }
 
 export function __wbindgen_closure_wrapper2(ptr, f, _ignored) {
-    let cb = function(arg0) {
-        return this.f(this.a, addHeapObject(arg0));
+    let cb = function() {
+        let a = this.a;
+        this.a = 0;
+        try {
+            return this.f(a);
+
+        } finally {
+            this.a = a;
+
+        }
+
     };
     cb.f = wasm.__wbg_function_table.get(f);
     cb.a = ptr;
