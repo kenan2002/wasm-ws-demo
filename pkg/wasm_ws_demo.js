@@ -221,12 +221,12 @@ export function __wbindgen_cb_drop(i) {
     dropRef(i);
 }
 
-export function __wbindgen_closure_wrapper2(ptr, f, _ignored) {
-    let cb = function() {
+export function __wbindgen_closure_wrapper16(ptr, f, _ignored) {
+    let cb = function(arg0) {
         let a = this.a;
         this.a = 0;
         try {
-            return this.f(a);
+            return this.f(a, addHeapObject(arg0));
 
         } finally {
             this.a = a;
