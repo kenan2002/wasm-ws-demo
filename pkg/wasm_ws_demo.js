@@ -1,9 +1,7 @@
 /* tslint:disable */
 import * as wasm from './wasm_ws_demo_bg';
 
-const __wbg_log_f57c568ecd16a171_target = console.log;
-
-let cachedDecoder = new TextDecoder('utf-8');
+let cachedEncoder = new TextEncoder('utf-8');
 
 let cachegetUint8Memory = null;
 function getUint8Memory() {
@@ -12,17 +10,6 @@ function getUint8Memory() {
     }
     return cachegetUint8Memory;
 }
-
-function getStringFromWasm(ptr, len) {
-    return cachedDecoder.decode(getUint8Memory().subarray(ptr, ptr + len));
-}
-
-export function __wbg_log_f57c568ecd16a171(arg0, arg1) {
-    let varg0 = getStringFromWasm(arg0, arg1);
-    __wbg_log_f57c568ecd16a171_target(varg0);
-}
-
-let cachedEncoder = new TextEncoder('utf-8');
 
 function passStringToWasm(arg) {
 
@@ -47,6 +34,27 @@ export function startRtm(arg0) {
 
 }
 
+const __widl_f_log_1__target = console.log;
+
+const stack = [];
+
+const slab = [{ obj: undefined }, { obj: null }, { obj: true }, { obj: false }];
+
+function getObject(idx) {
+    if ((idx & 1) === 1) {
+        return stack[idx >> 1];
+    } else {
+        const val = slab[idx >> 1];
+
+        return val.obj;
+
+    }
+}
+
+export function __widl_f_log_1_(arg0) {
+    __widl_f_log_1__target(getObject(arg0));
+}
+
 let cachegetUint32Memory = null;
 function getUint32Memory() {
     if (cachegetUint32Memory === null || cachegetUint32Memory.buffer !== wasm.memory.buffer) {
@@ -54,8 +62,6 @@ function getUint32Memory() {
     }
     return cachegetUint32Memory;
 }
-
-const slab = [{ obj: undefined }, { obj: null }, { obj: true }, { obj: false }];
 
 let slab_next = slab.length;
 
@@ -68,6 +74,12 @@ function addHeapObject(obj) {
 
     slab[idx] = { obj, cnt: 1 };
     return idx << 1;
+}
+
+let cachedDecoder = new TextDecoder('utf-8');
+
+function getStringFromWasm(ptr, len) {
+    return cachedDecoder.decode(getUint8Memory().subarray(ptr, ptr + len));
 }
 
 export function __widl_f_new_WebSocket(arg0, arg1, exnptr) {
@@ -94,19 +106,6 @@ function GetOwnOrInheritedPropertyDescriptor(obj, id) {
 const __widl_f_set_onopen_WebSocket_target = GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onopen').set || function() {
     throw new Error(`wasm-bindgen: GetOwnOrInheritedPropertyDescriptor(WebSocket.prototype, 'onopen').set does not exist`);
 };
-
-const stack = [];
-
-function getObject(idx) {
-    if ((idx & 1) === 1) {
-        return stack[idx >> 1];
-    } else {
-        const val = slab[idx >> 1];
-
-        return val.obj;
-
-    }
-}
 
 export function __widl_f_set_onopen_WebSocket(arg0, arg1) {
     __widl_f_set_onopen_WebSocket_target.call(getObject(arg0), getObject(arg1));
@@ -174,6 +173,10 @@ function dropRef(idx) {
 
 export function __wbindgen_object_drop_ref(i) {
     dropRef(i);
+}
+
+export function __wbindgen_string_new(p, l) {
+    return addHeapObject(getStringFromWasm(p, l));
 }
 
 export function __wbindgen_number_get(n, invalid) {
