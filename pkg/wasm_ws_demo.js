@@ -282,6 +282,21 @@ export class WS {
         this.ptr = 0;
         freeWS(ptr);
     }
+    /**
+    * @param {string} arg0
+    * @returns {void}
+    */
+    send(arg0) {
+        const [ptr0, len0] = passStringToWasm(arg0);
+        try {
+            return wasm.ws_send(this.ptr, ptr0, len0);
+
+        } finally {
+            wasm.__wbindgen_free(ptr0, len0 * 1);
+
+        }
+
+    }
 }
 
 export function __wbindgen_object_drop_ref(i) {
@@ -338,7 +353,9 @@ export function __wbindgen_cb_drop(i) {
     dropRef(i);
 }
 
-export function __wbindgen_closure_wrapper3(ptr, f, _ignored) {
+export function __wbindgen_rethrow(idx) { throw takeObject(idx); }
+
+export function __wbindgen_closure_wrapper21(ptr, f, _ignored) {
     let cb = function(arg0) {
         let a = this.a;
         this.a = 0;
@@ -358,7 +375,7 @@ export function __wbindgen_closure_wrapper3(ptr, f, _ignored) {
     return addHeapObject(real);
 }
 
-export function __wbindgen_closure_wrapper5(ptr, f, _ignored) {
+export function __wbindgen_closure_wrapper23(ptr, f, _ignored) {
     let cb = function(arg0) {
         let a = this.a;
         this.a = 0;

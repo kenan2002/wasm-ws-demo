@@ -21,6 +21,13 @@ pub struct WS {
     onerror: Closure<FnMut(JsValue)>,
 }
 
+#[wasm_bindgen]
+impl WS {
+    pub fn send(&self, data: &str) -> Result<(), JsValue> {
+        return self.ws.send_with_str(data);
+    }
+}
+
 #[wasm_bindgen(js_name=startRtm)]
 pub fn start_rtm(ws_url: &str) -> WS {
     let ws = Rc::new(WebSocket::new(ws_url).unwrap());
