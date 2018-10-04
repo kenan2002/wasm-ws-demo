@@ -33,16 +33,20 @@ pub fn start_rtm(ws_url: &str) -> WS {
     let ws = Rc::new(WebSocket::new(ws_url).unwrap());
     ws.set_binary_type(BinaryType::Arraybuffer);
 
-    let openWs = ws.clone();
-    let onopen = Closure::wrap(Box::new(move |_| {
-        log_1(&"open".into());
-        openWs.send_with_str("Hello");
-        let mut data = [111u8, 222u8, 13u8];
-        openWs.send_with_u8_array(&mut data);
-    }) as Box<FnMut(JsValue)>);
+    let onopen = {
+        let openWs = ws.clone();
+        Closure::wrap(Box::new(move |_| {
+            log_1(&"open".into());
+            openWs.send_with_str("Hello");
+            let mut data = [111u8, 222u8, 13u8];
+            openWs.send_with_u8_array(&mut data);
+        }) as Box<FnMut(JsValue)>)
+    };
+
     let onclose = Closure::wrap(Box::new(|_| {
         log_1(&"close".into());
     }) as Box<FnMut(JsValue)>);
+
     let onmessage = Closure::wrap(Box::new(|event: MessageEvent| {
         let data = event.data();
         match data.dyn_into::<ArrayBuffer>() {
@@ -58,14 +62,17 @@ pub fn start_rtm(ws_url: &str) -> WS {
             },
         }
     }) as Box<FnMut(MessageEvent)>);
+
     let onerror = Closure::wrap(Box::new(|_| {
         log_1(&"error".into());
     }) as Box<FnMut(JsValue)>);
+
     ws.set_onopen(Some(onopen.as_ref().unchecked_ref()));
     ws.set_onclose(Some(onclose.as_ref().unchecked_ref()));
     ws.set_onmessage(Some(onmessage.as_ref().unchecked_ref()));
     ws.set_onerror(Some(onerror.as_ref().unchecked_ref()));
 
+    // move ownership to JS, will be valid until .free() is called.
     return WS {
         ws,
         onopen,
